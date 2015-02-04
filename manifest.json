@@ -1,0 +1,23 @@
+{
+	"manifest_version": 2,
+	"name": "一起来做chrome扩展之本地存储",
+	"version": "0.1",
+	"description": "一个简单的本地存储例子",
+	"background": {
+		"scripts": [
+			"include/jquery-1.11.0.min.js",	
+			"scripts/background.js"
+		]
+	},
+	"content_scripts": [{
+		"matches": [
+			"http://*.jgb.cn/*",
+			"http://*.amazon.com/*"
+		],
+		"css": ["css/common.css"],
+		"js": [
+			"include/jquery-1.11.0.min.js",
+			"scripts/main.js"
+		]
+	}]
+}

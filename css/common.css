@@ -1,0 +1,7 @@
+
+#ls_box{position:absolute;width:500px;height:300px;background-color:#fff;border-radius:5px;border:1px solid #ccc;left:50%;top:50%;margin-left:-250px;margin-top:-150px;padding:10px;}
+#ls_box h3{padding:0px;margin:0px;height:30px;line-height:30px;border-bottom:1px solid #ccc;}
+#ls_box #ls_list{padding:10px 0px;height:200px;}
+#ls_box #ls_form{background-color:#efefef;padding:10px;border-radius:5px;}
+#ls_box #ls_form input{padding:5px 10px;width:370px;}
+#ls_box #ls_form button{padding:5px 10px;}
