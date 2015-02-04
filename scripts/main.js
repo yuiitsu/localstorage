@@ -64,7 +64,7 @@ var main = {
 	 * 将已有数据写到页面上
 	 */
 	showList: function(dicList){
-		if(!dicList){
+		if(!dicList || dicList.length == 0){
 			$("#ls_list").html('<p>没有找到数据</p>');
 			return;
 		}
