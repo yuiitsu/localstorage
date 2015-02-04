@@ -15,6 +15,9 @@ var main = {
 
 		// 加载已有数据
 		this.loadLocalStorage();
+
+		// 监听保存
+		this.listenSave();
 	},
 
 	// 创建界面
@@ -48,16 +51,85 @@ var main = {
 				_this.showList();
 				return false;
 			}
+
+			// 将json转为对象
+			_this.showList(response.data);
+			
+			// 监听删除
+			_this.listenDel();
 		});
 	},
 
 	/**
 	 * 将已有数据写到页面上
 	 */
-	showList: function(strHtml){
-		if(!strHtml){
+	showList: function(dicList){
+		if(!dicList){
 			$("#ls_list").html('<p>没有找到数据</p>');
+			return;
 		}
+
+		// 遍历对象，构建输出html
+		var _html = ['<ul>'];
+		for(var i in dicList){
+			_html.push('<li><span class="ls_del" data-item="'+dicList[i]+'">X</span>'+dicList[i]+'</li>');
+		}
+		_html.push('</ul>');
+		$("#ls_list").html(_html.join(''));
+		
+		// 监听删除
+		_this.listenDel();
+	},
+	
+	/**
+	 * 监听保存事件
+	 */
+	listenSave: function(){
+		_this = this;
+
+		$("#ls_save").click(function(){
+			// 获取message
+			var strMessage = $.trim($('#ls_message').val());
+			if(!strMessage){
+				return false;
+			}
+			// 通知background，保存数据
+			_this.sendMessageBack('save', {'message': strMessage}, function(response){
+				if(response.status == 200){
+					_this.showList(response.data);
+					$('#ls_message').val('');
+				}
+			});
+		});
+	},
+
+	/**
+	 * 监听删除事件
+	 */
+	listenDel: function(){
+		_this = this;
+
+		$(".ls_del").unbind('click').click(function(){
+			var $this = $(this);
+			// 获取删除值
+			var strMessage = $(this).attr('data-item');
+			if(!strMessage){
+				alert('未找到删除值，请重试');
+				return false;
+			}
+			if(confirm('确定要删除该条记录吗？')){
+				// 向background发消息，请求删除该值
+				_this.sendMessageBack('del', {'message': strMessage}, function(response){
+					if(response.status == 200){
+						$this.parent().fadeOut(function(){
+							$(this).remove();
+						});
+					}else{
+						alert(response.msg);
+					}
+				});
+			}
+		});
 	},
 
 	/**
